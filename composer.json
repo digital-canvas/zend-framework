@@ -1,0 +1,23 @@
+{
+    "name": "digital-canvas/zend-framework",
+    "type": "library",
+    "description": "Zend Framework with only the libraries and require_once() calls commented out for better performance with an autoloader." ,
+    "keywords": [
+        "zend framework",
+        "zf",
+        "zf1",
+        "zend"
+    ],
+    "homepage": "https://github.com/digital-canvas/zend-framework",
+    "require": {
+        "php": ">=5.2.4"
+    },
+    "include-path": ["library/"],
+    "autoload": {
+        "psr-0" : {
+            "Zend_" : "library/",
+            "ZendX_": "library/"
+        }
+    },
+    "bin": [ "bin/zf.php" ]
+}
