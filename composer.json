@@ -9,6 +9,7 @@
         "zend"
     ],
     "homepage": "https://github.com/digital-canvas/zend-framework",
+		"license": "BSD-3-Clause",
     "require": {
         "php": ">=5.2.4"
     },
@@ -19,5 +20,7 @@
             "ZendX_": "library/"
         }
     },
-    "bin": [ "bin/zf.php" ]
+    "config": {
+        "bin-dir": "bin"
+    }
 }
