@@ -13,44 +13,26 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Form
- * @subpackage Element
+ * @package    Zend_Service_WindowsAzure
+ * @subpackage Exception
+ * @version    $Id: Exception.php 25285 2013-03-09 10:30:20Z frosch $
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-
-/** Zend_Form_Element_Submit */
-// require_once 'Zend/Form/Element/Submit.php';
 
 /**
- * Button form element
- *
+ * @see Zend_Service_WindowsAzure_Exception
+ */
+// require_once 'Zend/Service/WindowsAzure/Exception.php';
+
+/**
  * @category   Zend
- * @package    Zend_Form
- * @subpackage Element
+ * @package    Zend_Service_WindowsAzure
+ * @subpackage Log
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Button.php 25189 2013-01-08 08:32:43Z frosch $
  */
-class Zend_Form_Element_Button extends Zend_Form_Element_Submit
+class Zend_Service_WindowsAzure_Log_Exception
+    extends Zend_Service_WindowsAzure_Exception
 {
-    /**
-     * Use formButton view helper by default
-     * @var string
-     */
-    public $helper = 'formButton';
-
-    /**
-     * Validate element value (pseudo)
-     *
-     * There is no need to reset the value
-     *
-     * @param  mixed $value Is always ignored
-     * @param  mixed $context Is always ignored
-     * @return boolean Returns always TRUE
-     */
-    public function isValid($value, $context = null)
-    {
-        return true;
-    }
 }

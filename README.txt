@@ -2,37 +2,21 @@ Welcome to the Zend Framework 1.12 Release!
 
 RELEASE INFORMATION
 ---------------
-Zend Framework 1.12.1 Release (r25165).
-Released on December 18, 2012.
+Zend Framework 1.12.3 Release (r25291).
+Released on March 13, 2013
 
-SECURITY FIXES FOR 1.12.1
--------------------------
+IMPORTANT FIXES FOR 1.12.3
+--------------------------
 
-This release incorporates fixes for:
+This release incorporates is primarily aimed to update
+Zend_Service_Twitter to the Twitter v1.1 API:
 
- - http://framework.zend.com/security/advisory/ZF2012-05
+ - http://framework.zend.com/issues/browse/ZF-12530
 
-Zend_Feed_Rss and Zend_Feed_Atom were found to contain XML eXternal
-Entity (XXE) Injection vectors due to insecure usage of the DOM
-extension.  External entities could be specified by adding a specific
-DOCTYPE element to XML-RPC requests; exploiting this vulnerability could
-coerce opening arbitrary files and/or TCP connections.
-
-A similar issue was fixed for 1.12.0, in the Zend_Feed::import() method;
-however, the reporter of the issue discovered that the individual
-classes contained similar functionality in their constructors which
-remained vulnerable.
-
-The patch applied removes the XXE vector by calling
-libxml_disable_entity_loader() before attempting to parse the feed via
-DOMDocument::loadXML().
-
-The above patches are also available in the 1.11 series of releases.
-
-Thanks goes to Yury Dyachenko at Positive Research Center for for
-reporting the XXE vulnerability and reviewing the patches created to fix
-the issue.
-
+Because the Twitter v1.1 API is not backwards compatible with v1.0, the
+API for Zend_Service_Twitter has been changed; if you have been using it
+previously, you will need to update your code accordingly. Both the
+end-user and API documentation have been updated to reflect the changes.
 
 NEW FEATURES
 ============
