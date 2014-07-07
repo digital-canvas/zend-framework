@@ -15,16 +15,16 @@
  * @category   Zend
  * @package    Zend_Loader
  * @subpackage PluginLoader
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: PluginLoader.php 24877 2012-06-04 14:04:53Z adamlundrigan $
+ * @version    $Id$
  */
 
 /** Zend_Loader_PluginLoader_Interface */
-require_once 'Zend/Loader/PluginLoader/Interface.php';
+// require_once 'Zend/Loader/PluginLoader/Interface.php';
 
 /** Zend_Loader */
-require_once 'Zend/Loader.php';
+// require_once 'Zend/Loader.php';
 
 /**
  * Generic plugin class loader
@@ -32,7 +32,7 @@ require_once 'Zend/Loader.php';
  * @category   Zend
  * @package    Zend_Loader
  * @subpackage PluginLoader
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
@@ -42,6 +42,12 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
      * @var string
      */
     protected static $_includeFileCache;
+
+    /**
+     * Class map cache file handler
+     * @var resource
+     */
+    protected static $_includeFileCacheHandler;
 
     /**
      * Instance loaded plugin paths
@@ -128,7 +134,13 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
         }
 
         $nsSeparator = (false !== strpos($prefix, '\\'))?'\\':'_';
-        return rtrim($prefix, $nsSeparator) . $nsSeparator;
+        $prefix = rtrim($prefix, $nsSeparator) . $nsSeparator;
+        //if $nsSeprator == "\" and the prefix ends in "_\" remove trailing \
+        //https://github.com/zendframework/zf1/issues/152
+        if(($nsSeparator == "\\") && (substr($prefix,-2) == "_\\")) {
+            $prefix = substr($prefix, 0, -1);
+        }
+        return $prefix;
     }
 
     /**
@@ -141,7 +153,7 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
     public function addPrefixPath($prefix, $path)
     {
         if (!is_string($prefix) || !is_string($path)) {
-            require_once 'Zend/Loader/PluginLoader/Exception.php';
+            // require_once 'Zend/Loader/PluginLoader/Exception.php';
             throw new Zend_Loader_PluginLoader_Exception('Zend_Loader_PluginLoader::addPrefixPath() method only takes strings for prefix and path.');
         }
 
@@ -246,14 +258,14 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
         }
 
         if (!isset($registry[$prefix])) {
-            require_once 'Zend/Loader/PluginLoader/Exception.php';
+            // require_once 'Zend/Loader/PluginLoader/Exception.php';
             throw new Zend_Loader_PluginLoader_Exception('Prefix ' . $prefix . ' was not found in the PluginLoader.');
         }
 
         if ($path != null) {
             $pos = array_search($path, $registry[$prefix]);
             if (false === $pos) {
-                require_once 'Zend/Loader/PluginLoader/Exception.php';
+                // require_once 'Zend/Loader/PluginLoader/Exception.php';
                 throw new Zend_Loader_PluginLoader_Exception('Prefix ' . $prefix . ' / Path ' . $path . ' was not found in the PluginLoader.');
             }
             unset($registry[$prefix][$pos]);
@@ -408,7 +420,7 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
             foreach ($registry as $prefix => $paths) {
                 $message .= "\n$prefix: " . implode(PATH_SEPARATOR, $paths);
             }
-            require_once 'Zend/Loader/PluginLoader/Exception.php';
+            // require_once 'Zend/Loader/PluginLoader/Exception.php';
             throw new Zend_Loader_PluginLoader_Exception($message);
        }
 
@@ -432,21 +444,28 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
      */
     public static function setIncludeFileCache($file)
     {
+        if (!empty(self::$_includeFileCacheHandler)) {
+            flock(self::$_includeFileCacheHandler, LOCK_UN);
+            fclose(self::$_includeFileCacheHandler);
+        }
+
+        self::$_includeFileCacheHandler = null;
+
         if (null === $file) {
             self::$_includeFileCache = null;
             return;
         }
 
         if (!file_exists($file) && !file_exists(dirname($file))) {
-            require_once 'Zend/Loader/PluginLoader/Exception.php';
+            // require_once 'Zend/Loader/PluginLoader/Exception.php';
             throw new Zend_Loader_PluginLoader_Exception('Specified file does not exist and/or directory does not exist (' . $file . ')');
         }
         if (file_exists($file) && !is_writable($file)) {
-            require_once 'Zend/Loader/PluginLoader/Exception.php';
+            // require_once 'Zend/Loader/PluginLoader/Exception.php';
             throw new Zend_Loader_PluginLoader_Exception('Specified file is not writeable (' . $file . ')');
         }
         if (!file_exists($file) && file_exists(dirname($file)) && !is_writable(dirname($file))) {
-            require_once 'Zend/Loader/PluginLoader/Exception.php';
+            // require_once 'Zend/Loader/PluginLoader/Exception.php';
             throw new Zend_Loader_PluginLoader_Exception('Specified file is not writeable (' . $file . ')');
         }
 
@@ -471,14 +490,17 @@ class Zend_Loader_PluginLoader implements Zend_Loader_PluginLoader_Interface
      */
     protected static function _appendIncFile($incFile)
     {
-        if (!file_exists(self::$_includeFileCache)) {
-            $file = '<?php';
-        } else {
-            $file = file_get_contents(self::$_includeFileCache);
+        if (!isset(self::$_includeFileCacheHandler)) {
+            self::$_includeFileCacheHandler = fopen(self::$_includeFileCache, 'ab');
+
+            if (!flock(self::$_includeFileCacheHandler, LOCK_EX | LOCK_NB, $wouldBlock) || $wouldBlock) {
+                self::$_includeFileCacheHandler = false;
+            }
         }
-        if (!strstr($file, $incFile)) {
-            $file .= "\ninclude_once '$incFile';";
-            file_put_contents(self::$_includeFileCache, $file);
+
+        if (false !== self::$_includeFileCacheHandler) {
+            $line = "<?php include_once '$incFile'?>\n";
+            fwrite(self::$_includeFileCacheHandler, $line, strlen($line));
         }
     }
 }

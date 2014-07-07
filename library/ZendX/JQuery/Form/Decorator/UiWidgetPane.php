@@ -15,9 +15,9 @@
  * @category    ZendX
  * @package     ZendX_JQuery
  * @subpackage  View
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license     http://framework.zend.com/license/new-bsd     New BSD License
- * @version     $Id: UiWidgetPane.php 20165 2010-01-09 18:57:56Z bkarwin $
+ * @version     $Id$
  */
 
 // require_once "Zend/Form/Decorator/Abstract.php";
@@ -27,7 +27,7 @@
  *
  * @package    ZendX_JQuery
  * @subpackage Form
- * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class ZendX_JQuery_Form_Decorator_UiWidgetPane extends Zend_Form_Decorator_Abstract
