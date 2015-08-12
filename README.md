@@ -7,15 +7,26 @@ Master: [![Build Status](https://api.travis-ci.org/zendframework/zf1.png?branch=
 RELEASE INFORMATION
 ===================
 
-Zend Framework 1.12.13 Release.
-Released on May 20, 2015.
+Zend Framework 1.12.15 Release.
+Released on Aug 11, 2015.
 
-IMPORTANT FIXES FOR 1.12.13
+IMPORTANT FIXES FOR 1.12.15
 ---------------------------
 
-- [#567](https://github.com/zendframework/zf1/pull/567) fixes an issue
-  introduced in 1.12.12 whereby header value assertions were too strict,
-  and did not allow integer or float values.
+This release contains several fixes that address backwards compatibility issues:
+
+- [#591](https://github.com/zendframework/zf1/pull/591) adds PHP 5.2 support for
+  the [ZF2015-06](http://framework.zend.com/security/advisory/ZF2015-06)
+  security fix introduced in 1.12.14.
+- [#587](https://github.com/zendframework/zf1/pull/587) fixes the regular
+  expression used to match a header in `Zend_Http_Response::extractHeaders()`
+  to ensure it allows any valid header name (previously, it failed with header
+  names that included `.` characters), as well as empty header values.
+- [#597](https://github.com/zendframework/zf1/pull/597) updates
+  `Zend_Http_Client_Adapter_Curl` to properly distinguish between the `timeout`
+  configuration setting (which should map to `CURLOPT_CONNECTTIMEOUT` and/or
+  `CURLOPT_CONNECTTIMEOUT_MS`) and the `request_timeout` setting (which should
+  map to `CURLOPT_TIMEOUT` and/or `CURLOPT_TIMEOUT_MS`).
 
 See http://framework.zend.com/changelog for full details.
 
