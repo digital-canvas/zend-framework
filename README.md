@@ -7,26 +7,27 @@ Master: [![Build Status](https://api.travis-ci.org/zendframework/zf1.png?branch=
 RELEASE INFORMATION
 ===================
 
-Zend Framework 1.12.15 Release.
-Released on Aug 11, 2015.
+Zend Framework 1.12.16 Release.
+Released on Sep 15, 2015.
 
-IMPORTANT FIXES FOR 1.12.15
+IMPORTANT FIXES FOR 1.12.16
 ---------------------------
 
-This release contains several fixes that address backwards compatibility issues:
+This release contains security fixes:
 
-- [#591](https://github.com/zendframework/zf1/pull/591) adds PHP 5.2 support for
-  the [ZF2015-06](http://framework.zend.com/security/advisory/ZF2015-06)
-  security fix introduced in 1.12.14.
-- [#587](https://github.com/zendframework/zf1/pull/587) fixes the regular
-  expression used to match a header in `Zend_Http_Response::extractHeaders()`
-  to ensure it allows any valid header name (previously, it failed with header
-  names that included `.` characters), as well as empty header values.
-- [#597](https://github.com/zendframework/zf1/pull/597) updates
-  `Zend_Http_Client_Adapter_Curl` to properly distinguish between the `timeout`
-  configuration setting (which should map to `CURLOPT_CONNECTTIMEOUT` and/or
-  `CURLOPT_CONNECTTIMEOUT_MS`) and the `request_timeout` setting (which should
-  map to `CURLOPT_TIMEOUT` and/or `CURLOPT_TIMEOUT_MS`).
+- **ZF2015-07**: A number of components, including `Zend_Cloud`,
+  `Zend_Search_Lucene`, and `Zend_Service_WindowsAzure` were creating directories with
+  a liberal umask that could lead to local arbitrary code execution and/or
+  local privilege escalation. This release contains a patch that ensures the
+  directories are created using permissions of 0775 and files using 0664
+  (essentially umask 0002).
+
+- **ZF2015-08**: ZF2014-06 uncovered an issue in the sqlsrv adapter provided by
+  the framework whereby null bytes were not filtered correctly when generating
+  SQL. A reporter discovered the same vulnerability is present in our PDO implementation
+  when used with pdo_dblib, and could potentially be applied to other PDO adapters.
+  This release contains a patch to properly escape null bytes used in SQL queries
+  across all PDO adapters shipped with the framework.
 
 See http://framework.zend.com/changelog for full details.
 
