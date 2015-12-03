@@ -22,5 +22,8 @@
     },
     "config": {
         "bin-dir": "bin"
+    },
+    "replace": {
+    	"zendframework/zendframework1": "self.version"
     }
 }
