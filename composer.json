@@ -9,7 +9,7 @@
         "zend"
     ],
     "homepage": "https://github.com/digital-canvas/zend-framework",
-		"license": "BSD-3-Clause",
+	"license": "BSD-3-Clause",
     "require": {
         "php": ">=5.2.11"
     },
